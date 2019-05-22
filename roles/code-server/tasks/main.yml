@@ -1,0 +1,93 @@
+---
+
+- name: install code-server to lib dir
+  unarchive:
+    src: "{{ code_server_download_url }}"
+    dest: "{{ code_server_lib_path }}"
+    remote_src: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  tags:
+    - code-server
+
+- name: Creates code projects directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  with_items:
+    - "{{ code_projects_dir }}"
+    - "{{ code_server_settings_folder }}"
+    - "{{ code_server_settings_folder }}/User"
+  tags:
+    - code-server
+
+- name: Changing perm of "code-server", adding "+x"
+  file:
+    dest: "{{ code_server_lib_bin }}"
+    mode: a+x
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  tags:
+    - code-server
+
+- name: Create symbolic link
+  file:
+    src: "{{ code_server_lib_bin }}"
+    dest: "{{ code_server_bin }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    state: link
+  tags:
+    - code-server
+
+- name: Restart vs code
+  service:
+    name: code-server
+    state: restarted
+  ignore_errors: yes
+  tags:
+    - code-server
+
+- name: Creates code-server directory
+  file:
+    path: "/home/{{ user }}/.code-server"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  tags:
+    - code-server
+
+- name: symlink to vscode extensions
+  file:
+    src: "{{ vscode_extensions_folder }}"
+    dest: "{{ code_server_settings_folder }}/extensions"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    force: yes
+    state: link
+  when: symlink_vscode == True
+  tags:
+    - code-server
+
+- name: write code settings
+  template:
+    src: settings.json.j2
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    dest: "{{ code_server_settings_folder }}/User/settings.json"
+  tags:
+    - code-server
+
+- name: code-server | template /etc/systemd/system/code-server.service
+  template:
+    src: systemd.conf.j2
+    dest: /etc/systemd/system/code-server.service
+    owner: root
+    group: root
+    mode: 0755
+  become: yes
+  notify: restart code-server
+  tags:
+    - code-server

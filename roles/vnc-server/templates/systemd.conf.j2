@@ -1,0 +1,17 @@
+[Unit]
+Description=Start TigerVNC server at startup
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User={{ user }}
+Group={{ user }}
+WorkingDirectory=/home/{{ user }}
+
+PIDFile=/home/{{ user }}/.vnc/%H:{{ vnc_display_no }}.pid
+ExecStartPre=-/usr/bin/vncserver -kill :{{ vnc_display_no }} > /dev/null 2>&1
+ExecStart=/usr/bin/vncserver -depth 24 -geometry 1280x800 :{{ vnc_display_no }}
+ExecStop=/usr/bin/vncserver -kill :{{ vnc_display_no }}
+
+[Install]
+WantedBy=multi-user.target

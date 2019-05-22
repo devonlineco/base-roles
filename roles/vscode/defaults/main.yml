@@ -1,0 +1,29 @@
+---
+vscode_install: true
+
+extensions:
+  # - gabrielgrinberg.auto-run-command
+  # - ms-vsliveshare.vsliveshare
+  - vscodevim.vim
+  - ms-vscode.go
+  - dracula-theme.theme-dracula
+  - jakebecker.elixir-ls
+  - PeterJausovec.vscode-docker
+  - editorconfig.editorconfig
+  - iampeterbanjo.elixirlinter
+  - eamodio.gitlens
+  - kumar-harsh.graphql-for-vscode
+  - mohsen1.react-javascript-to-typescript-transform-vscode
+  - wholroyd.jinja
+  - silvenon.mdx
+  - ms-vscode.node-debug2
+  - foxundermoon.shell-format
+  - mauve.terraform
+  - mjmcloug.vscode-elixir
+  - sammkj.vscode-elixir-formatter
+  - redhat.vscode-yaml
+  - ms-kubernetes-tools.vscode-kubernetes-tools
+  - shan.code-settings-sync
+  - peterjausovec.vscode-docker
+  - ms-vscode.vscode-typescript-tslint-plugin
+  - redhat.vscode-yaml

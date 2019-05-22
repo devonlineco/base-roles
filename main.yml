@@ -1,0 +1,19 @@
+---
+- name: Configure the server and install required software
+  hosts: all
+  gather_facts: false
+  become: true
+  vars_files:
+    - config.cfg
+
+  roles:
+    - role: common
+      tags: common
+    - role: vnc-server
+      tags: vnc
+    - role: vscode
+      tags: vscode
+    - role: code-server
+      tags: code-server
+    - role: nginx
+      tags: nginx
